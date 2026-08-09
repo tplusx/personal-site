@@ -29,13 +29,32 @@ if (joke) {
 
 const form = document.querySelector("[data-contact-form]");
 if (form) {
-  form.addEventListener("submit", (event) => {
+  const status = document.querySelector("[data-form-status]");
+  const deliveryStatus = new URLSearchParams(window.location.search).get("status");
+  if (deliveryStatus === "sent") status.textContent = "Thanks — your enquiry has been sent to Nnamdi.";
+  if (deliveryStatus === "error") status.textContent = "Your enquiry could not be sent. Please email info@nnamdi.ng instead.";
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    const data = new FormData(form);
-    const subject = encodeURIComponent(`Project enquiry from ${data.get("name")}`);
-    const body = encodeURIComponent(`${data.get("message")}\n\nFrom: ${data.get("name")} (${data.get("email")})`);
-    document.querySelector("[data-form-status]").textContent = "Your email app is opening — I look forward to hearing from you.";
-    window.location.href = `mailto:info@nnamdi.ng?subject=${subject}&body=${body}`;
+    const submit = form.querySelector("[type=submit]");
+    status.textContent = "Sending your enquiry…";
+    submit.disabled = true;
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "Your enquiry could not be sent.");
+      form.reset();
+      status.textContent = "Thanks — your enquiry has been sent to Nnamdi.";
+    } catch (error) {
+      status.textContent = error.message || "Something went wrong. Please email info@nnamdi.ng instead.";
+    } finally {
+      submit.disabled = false;
+    }
   });
 }
 

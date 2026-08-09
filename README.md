@@ -1,13 +1,14 @@
 # Nnamdi — Personal site
 
-A lean, four-page portfolio for Nnamdi, a Product Leader. The site uses plain HTML, CSS and browser JavaScript; Vite is included only as optional development and build tooling.
+A lean, four-page portfolio for Nnamdi, a Product Leader. The frontend uses plain HTML, CSS and browser JavaScript; a small PHP endpoint delivers contact enquiries. Vite is included only as optional development and build tooling.
 
 ## Pages
 
 - `index.html` — homepage and randomly selected joke
 - `work.html` — placeholder product leadership work
 - `about.html` — profile and working principles
-- `contact.html` — email-based enquiry form
+- `contact.html` — enquiry form
+- `contact.php` — validated, rate-limited server-side email handler
 
 Shared styles, behavior and jokes live in `src/`.
 
@@ -15,13 +16,21 @@ Shared styles, behavior and jokes live in `src/`.
 
 ### Without Node
 
-From the repository root, run any static file server. Python is a convenient option:
+To browse the pages without testing email delivery, run any static file server. Python is a convenient option:
 
 ```sh
 python3 -m http.server 8000
 ```
 
 Open <http://localhost:8000>. No dependencies or build step are required.
+
+To test the contact handler locally, use PHP's development server instead:
+
+```sh
+CONTACT_TO=your-email@example.com php -S localhost:8000
+```
+
+The host must have PHP's `mail()` transport configured for an enquiry to be delivered. In production, set the `CONTACT_TO` environment variable to keep the delivery inbox outside the repository; it defaults to `info@nnamdi.ng`.
 
 ### With Node and Vite
 
@@ -39,7 +48,9 @@ npm run preview
 
 ## Deploy
 
-The site can be uploaded directly to any static host. When using the optional Vite build, deploy the generated `dist/` directory. The `public/_headers` file supplies security headers on hosts that support the Netlify-style headers format. Configure equivalent headers in the host dashboard when the platform does not read this file.
+Deploy the site to a web host with PHP and a configured mail transport. Upload the HTML files, `src/`, `contact.php`, and the applicable security-header configuration. A static-only host will display the pages but cannot run the contact handler without adapting it to that platform's serverless functions.
+
+The `public/_headers` file supplies security headers on hosts that support the Netlify-style headers format. Configure equivalent headers in the host dashboard when the platform does not read this file. Vite can still bundle the frontend, but its output does not include the PHP handler; copy `contact.php` alongside the built pages if the host serves the `dist/` directory.
 
 The production domain is currently **nnamdi.ng**, and the public contact address is **info@nnamdi.ng**.
 
@@ -54,7 +65,9 @@ For example, to move the site from `nnamdi.ng` to `nnamdi.eu`:
    - `contact.html`
 2. If the email address also changes, replace `info@nnamdi.ng` in:
    - `contact.html` (the visible email link)
-   - `src/main.js` (the contact form's generated `mailto:` link)
+   - `src/main.js` (delivery status fallback copy)
+   - `contact.php` (default recipient, sender domain and fallback copy)
+   Prefer setting `CONTACT_TO` on the server when only the private delivery inbox changes.
 3. Point the new domain's DNS records to the chosen hosting provider and add the domain in that provider's project settings.
 4. Enable HTTPS before launch. Keep the `Strict-Transport-Security` header only after HTTPS works correctly on the domain and its subdomains.
 5. Build or upload the site, then check every page and submit a test enquiry.
