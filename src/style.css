@@ -61,7 +61,7 @@ button, input, textarea { font: inherit; }
 .section-head { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 5rem; }
 .section-number { font-size: .7rem; letter-spacing: .15em; }
 .section-head h2 { margin: 0; max-width: 800px; font-family: Georgia, serif; font-size: clamp(2.6rem, 5.5vw, 5rem); line-height: 1; font-weight: 400; letter-spacing: -.045em; }
-.projects { display: grid; grid-template-columns: 1.25fr .75fr; gap: clamp(1rem, 3vw, 3rem); }
+.projects { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 72rem; }
 .project { text-decoration: none; }
 .project-visual { min-height: 420px; overflow: hidden; position: relative; background: var(--purple); }
 .project:nth-child(2) .project-visual { background: var(--orange); min-height: 330px; margin-top: 7rem; }
