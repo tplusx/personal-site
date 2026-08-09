@@ -1,0 +1,19 @@
+import { defineConfig } from "vite";
+
+const securityHeaders = {
+  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' mailto:; base-uri 'self'; frame-ancestors 'none'",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+};
+
+export default defineConfig({
+  server: { headers: securityHeaders },
+  preview: { headers: securityHeaders },
+  build: {
+    rollupOptions: {
+      input: ["index.html", "work.html", "about.html", "contact.html"],
+    },
+  },
+});
