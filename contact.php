@@ -33,11 +33,6 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     respond(405, 'Please submit the contact form.');
 }
 
-// A hidden field catches basic form bots without inconveniencing real visitors.
-if (trim((string) ($_POST['website'] ?? '')) !== '') {
-    respond(200, 'Thanks — your enquiry has been received.');
-}
-
 $lastSubmission = (int) ($_SESSION['last_contact_submission'] ?? 0);
 if ($lastSubmission > 0 && time() - $lastSubmission < RATE_LIMIT_SECONDS) {
     respond(429, 'Please wait a moment before sending another enquiry.');

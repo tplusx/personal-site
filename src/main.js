@@ -46,6 +46,10 @@ if (form) {
         body: new FormData(form),
         headers: { Accept: "application/json" },
       });
+      const contentType = response.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        throw new Error("The contact service is unavailable. Please try again later.");
+      }
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || "Your enquiry could not be sent.");
       form.reset();

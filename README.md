@@ -30,7 +30,7 @@ To test the contact handler locally, use PHP's development server instead:
 CONTACT_TO=your-email@example.com php -S localhost:8000
 ```
 
-The host must have PHP's `mail()` transport configured for an enquiry to be delivered. In production, set the `CONTACT_TO` environment variable to keep the delivery inbox outside the repository; it defaults to `info@nnamdi.ng`.
+The host must have PHP's `mail()` transport configured for an enquiry to be delivered. In production, set the `CONTACT_TO` environment variable to keep the delivery inbox outside the repository; it defaults to `info@nnamdi.ng`. The form never opens a local email application.
 
 ### With Node and Vite
 
