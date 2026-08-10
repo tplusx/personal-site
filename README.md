@@ -30,7 +30,7 @@ To test the contact handler locally, use PHP's development server instead:
 CONTACT_TO=your-email@example.com php -S localhost:8000
 ```
 
-The host must have PHP's `mail()` transport configured for an enquiry to be delivered. In production, set the `CONTACT_TO` environment variable to keep the delivery inbox outside the repository; it defaults to `info@nnamdi.ng`. The form never opens a local email application.
+The host must have PHP's `mail()` transport configured for an enquiry to be delivered. In production, set the `CONTACT_TO` environment variable to keep the delivery inbox outside the repository; it defaults to `info@nnamdi.ng`. `CONTACT_FROM` controls the local sender and envelope sender, and also defaults to `info@nnamdi.ng`. On shared hosting—especially when this is configured as an addon domain—`CONTACT_FROM` must be an existing mailbox on a domain attached to the hosting account, otherwise the server may accept the form but discard the message. The form never opens a local email application.
 
 ### With Node and Vite
 
