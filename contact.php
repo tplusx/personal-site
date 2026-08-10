@@ -58,16 +58,27 @@ if ($message === '' || strlen($message) > MAX_MESSAGE_LENGTH) {
 $safeName = preg_replace('/[\r\n\x00-\x1F\x7F]+/u', ' ', $name) ?? 'Website visitor';
 $safeEmail = str_replace(["\r", "\n"], '', $email);
 $recipient = getenv('CONTACT_TO') ?: 'info@nnamdi.ng';
+$sender = getenv('CONTACT_FROM') ?: 'info@nnamdi.ng';
 $subject = 'Website enquiry from ' . $safeName;
 $body = "Name: {$safeName}\nEmail: {$safeEmail}\n\nMessage:\n{$message}\n";
 $headers = [
-    'From: Nnamdi website <noreply@nnamdi.ng>',
+    // Shared hosts commonly reject mail whose sender is not a real mailbox on
+    // the hosted domain. info@nnamdi.ng is also the site's public mailbox.
+    "From: Nnamdi website <{$sender}>",
     "Reply-To: {$safeEmail}",
     'Content-Type: text/plain; charset=UTF-8',
     'X-Mailer: PHP/' . PHP_VERSION,
 ];
 
-if (!mail($recipient, $subject, $body, implode("\r\n", $headers))) {
+$sent = mail(
+    $recipient,
+    $subject,
+    $body,
+    implode("\r\n", $headers),
+    '-f' . escapeshellarg($sender),
+);
+
+if (!$sent) {
     respond(503, 'Your enquiry could not be sent right now. Please email info@nnamdi.ng instead.');
 }
 
