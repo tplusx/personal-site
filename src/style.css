@@ -96,6 +96,7 @@ button, input, textarea { font: inherit; }
 
 .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem, 8vw, 8rem); }
 .contact-form { display: grid; gap: 2rem; }
+.contact-trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .field { display: grid; gap: .7rem; }
 .field label { font-size: .67rem; letter-spacing: .15em; text-transform: uppercase; }
 .field input, .field textarea { width: 100%; border: 0; border-bottom: 1px solid var(--ink); border-radius: 0; background: transparent; padding: .8rem 0; outline: none; }
