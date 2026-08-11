@@ -92,7 +92,7 @@ if ($count > 5) {
 
 // On an addon domain, DOCUMENT_ROOT is the addon's public directory, so this
 // resolves to a private configuration file one level above the web root.
-$configPath = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? __DIR__)) . '/contact-config.php';
+$configPath = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? __DIR__)) . '/contact-config-1.php';
 if (!is_readable($configPath)) {
     error_log('Nnamdi contact: SMTP config not found outside the document root.');
     respond(503, 'Mail is temporarily unavailable. Please try again later.');
