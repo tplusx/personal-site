@@ -46,7 +46,7 @@ return [
 ];
 ```
 
-Use the SMTP hostname, port, security setting, and mailbox credentials shown in the hosting control panel. For an addon domain whose document root is `/home/account/nnamdi.ng`, the configuration belongs at `/home/account/contact-config-1.php`. Do not put the real configuration in this repository or inside the public document root.
+Use the SMTP hostname, port, security setting, and mailbox credentials shown in the hosting control panel. The handler locates the configuration relative to `contact.php`, not the server's potentially incorrect `DOCUMENT_ROOT`: if `contact.php` is `/home/account/nnamdi.ng/contact.php`, the configuration must be `/home/account/contact-config-1.php`. Do not put the real configuration in this repository or inside the public document root.
 
 ### With Node and Vite
 

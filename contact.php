@@ -90,12 +90,12 @@ if ($count > 5) {
     respond(429, 'Too many messages. Please try again later.');
 }
 
-// On an addon domain, DOCUMENT_ROOT is the addon's public directory, so this
-// resolves to a private configuration file one level above the web root.
-$configPath = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? __DIR__)) . '/contact-config-1.php';
+// Resolve relative to this deployed script rather than DOCUMENT_ROOT. On some
+// addon-domain configurations DOCUMENT_ROOT still points at the primary site.
+$configPath = dirname(__DIR__) . '/contact-config-1.php';
 if (!is_readable($configPath)) {
-    error_log('Nnamdi contact: contact-config-1.php not found outside the document root.');
-    respond(503, 'Mail is temporarily unavailable. Please try again later.');
+    error_log('Nnamdi contact: SMTP config is not readable at ' . $configPath);
+    respond(503, 'Mail configuration was not found. Please email info@nnamdi.ng instead.');
 }
 try {
     $config = require $configPath;
@@ -173,7 +173,7 @@ try {
         fclose($socket);
     }
     error_log('Nnamdi contact SMTP error: ' . $error->getMessage());
-    respond(502, 'Mail is temporarily unavailable. Please try again later.');
+    respond(502, 'The mail server rejected the enquiry. Please email info@nnamdi.ng instead.');
 }
 
 respond(200, 'Thanks — your enquiry has been sent to Nnamdi.');
