@@ -27,10 +27,26 @@ Open <http://localhost:8000>. No dependencies or build step are required.
 To test the contact handler locally, use PHP's development server instead:
 
 ```sh
-CONTACT_TO=your-email@example.com php -S localhost:8000
+php -S localhost:8000
 ```
 
-The host must have PHP's `mail()` transport configured for an enquiry to be delivered. In production, set the `CONTACT_TO` environment variable to keep the delivery inbox outside the repository; it defaults to `info@nnamdi.ng`. The form never opens a local email application.
+The contact handler sends directly through authenticated SMTP rather than relying on PHP's often-unconfigured `mail()` transport. Create `contact-config-1.php` **one directory above the addon domain's document root** so credentials cannot be downloaded from the website. The `-1` suffix is intentional and keeps this site's configuration separate from the existing `contact-config.php` used by another site:
+
+```php
+<?php
+return [
+    'smtp_host' => 'mail.example.com',
+    'smtp_port' => 465,
+    'smtp_security' => 'ssl', // Use "tls" with the host's STARTTLS port.
+    'smtp_username' => 'info@nnamdi.ng',
+    'smtp_password' => 'replace-with-the-mailbox-password',
+    'from_email' => 'info@nnamdi.ng',
+    'from_name' => 'Nnamdi website',
+    'to_email' => 'info@nnamdi.ng',
+];
+```
+
+Use the SMTP hostname, port, security setting, and mailbox credentials shown in the hosting control panel. For an addon domain whose document root is `/home/account/nnamdi.ng`, the configuration belongs at `/home/account/contact-config-1.php`. Do not put the real configuration in this repository or inside the public document root.
 
 ### With Node and Vite
 
