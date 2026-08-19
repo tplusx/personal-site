@@ -30,7 +30,7 @@ To test the contact handler locally, use PHP's development server instead:
 php -S localhost:8000
 ```
 
-The contact handler sends directly through authenticated SMTP rather than relying on PHP's often-unconfigured `mail()` transport. Create `contact-config.php` **one directory above the addon domain's document root** so credentials cannot be downloaded from the website:
+The contact handler sends directly through authenticated SMTP rather than relying on PHP's often-unconfigured `mail()` transport. Create `contact-config-1.php` **one directory above the addon domain's document root** so credentials cannot be downloaded from the website. The `-1` suffix is intentional and keeps this site's configuration separate from the existing `contact-config.php` used by another site:
 
 ```php
 <?php
@@ -46,7 +46,7 @@ return [
 ];
 ```
 
-Use the SMTP hostname, port, security setting, and mailbox credentials shown in the hosting control panel. For an addon domain whose document root is `/home/account/nnamdi.ng`, the configuration belongs at `/home/account/contact-config.php`. Do not put the real configuration in this repository or inside the public document root.
+Use the SMTP hostname, port, security setting, and mailbox credentials shown in the hosting control panel. For an addon domain whose document root is `/home/account/nnamdi.ng`, the configuration belongs at `/home/account/contact-config-1.php`. Do not put the real configuration in this repository or inside the public document root.
 
 ### With Node and Vite
 

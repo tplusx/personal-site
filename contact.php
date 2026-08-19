@@ -94,7 +94,7 @@ if ($count > 5) {
 // resolves to a private configuration file one level above the web root.
 $configPath = dirname((string) ($_SERVER['DOCUMENT_ROOT'] ?? __DIR__)) . '/contact-config-1.php';
 if (!is_readable($configPath)) {
-    error_log('Nnamdi contact: SMTP config not found outside the document root.');
+    error_log('Nnamdi contact: contact-config-1.php not found outside the document root.');
     respond(503, 'Mail is temporarily unavailable. Please try again later.');
 }
 try {
