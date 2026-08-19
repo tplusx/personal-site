@@ -48,10 +48,10 @@ if (form) {
       });
       const contentType = response.headers.get("content-type") || "";
       if (!contentType.includes("application/json")) {
-        throw new Error("The contact service is unavailable. Please try again later.");
+        throw new Error(`The contact service returned an unexpected response (HTTP ${response.status}). Please email info@nnamdi.ng instead.`);
       }
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || "Your enquiry could not be sent.");
+      if (!response.ok) throw new Error(result.message || `Your enquiry could not be sent (HTTP ${response.status}).`);
       form.reset();
       status.textContent = "Thanks — your enquiry has been sent to Nnamdi.";
     } catch (error) {
